@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h2>Product List</h2>
+		<h4 th:text="${login}" class="text-success" style="text-align: center;"></h4>
+		<div sec:authorize="isAuthenticated()"
+			style="text-align: center; color: blue">
+			Welcome <b><span sec:authentication="name">Username</span></b> &nbsp;
+			<i><span sec:authentication="principal.authorities">Roles</span></i>
+		</div>
+		<div>
+			<form th:action="@{/logout}" method="post">
+				<input type="submit" class="btn btn-primary" value="Logout" />
+				<h4 th:text="${deletemsg}" class="text-success" style="text-align: center;"></h4>
+			</form>
+			&nbsp;
+			<div sec:authorize="hasAnyAuthority('EDITOR', 'ADMIN')">
+				<a th:href="@{/new}" class="btn btn-success">Create New Product</a>
+			</div>
+		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>ID:</th>
+					<th>Product Name:</th>
+					<th>Category</th>
+					<th>Price</th>
+					<th sec:authorize="hasAnyAuthority('ADMIN','EDITOR')">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="prod : ${plist}">
+					<td th:text="${prod.id}"></td>
+					<td th:text="${prod.pname}"></td>
+					<td th:text="${prod.categary}"></td>
+					<td th:text="${prod.price}"></td>
+					<td sec:authorize="hasAnyAuthority('ADMIN', 'EDITOR')"><a th:href="@{/getupdateId/(id=${prod.id})}"
+						class="btn btn-primary eBtn">Edit</a>
+						 <a sec:authorize="hasAuthority('ADMIN')"
+						th:href="@{/delete/(id=${prod.id})}" class="btn btn-danger dBtn">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
