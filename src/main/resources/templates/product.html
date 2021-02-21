@@ -5,30 +5,70 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">SpringBoot</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active"><a class="nav-link" href="#">Home
+						<span class="sr-only">(current)</span>
+				</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/403}">Gallary</a>
+				</li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false"> Login </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#">SignIn</a> <a
+							class="dropdown-item" th:href="@{/login}">SignUp</a> <a
+							class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+				<li class="nav-item"><a class="nav-link" th:href="@{/403}">ContactUs</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2" type="search"
+					placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
 	<div class="container">
-		<h2>Product List</h2>
-		<h4 th:text="${login}" class="text-success" style="text-align: center;"></h4>
+		<h2 style="text-align: center;color: red">Product List</h2>
+		<h4 th:text="${login}" class="text-success"
+			style="text-align: center;"></h4>
 		<div sec:authorize="isAuthenticated()"
 			style="text-align: center; color: blue">
 			Welcome <b><span sec:authentication="name">Username</span></b> &nbsp;
 			<i><span sec:authentication="principal.authorities">Roles</span></i>
 		</div>
 		<div>
-			<form th:action="@{/logout}" method="post">
+			<!-- <form th:action="@{/logout}" method="post">
 				<input type="submit" class="btn btn-primary" value="Logout" />
-				<h4 th:text="${deletemsg}" class="text-success" style="text-align: center;"></h4>
+				<h4 th:text="${deletemsg}" class="text-success"
+					style="text-align: center;"></h4>
 			</form>
-			&nbsp;
+			&nbsp; -->
 			<div sec:authorize="hasAnyAuthority('EDITOR', 'ADMIN')">
 				<a th:href="@{/new}" class="btn btn-success">Create New Product</a>
+				<h5 th:text="${deletemsg}" class="text-success"
+					style="text-align: center;"></h5>
 			</div>
+			&nbsp;
 		</div>
 		<table class="table table-bordered">
 			<thead>
@@ -46,9 +86,10 @@
 					<td th:text="${prod.pname}"></td>
 					<td th:text="${prod.categary}"></td>
 					<td th:text="${prod.price}"></td>
-					<td sec:authorize="hasAnyAuthority('ADMIN', 'EDITOR')"><a th:href="@{/getupdateId/(id=${prod.id})}"
-						class="btn btn-primary eBtn">Edit</a>
-						 <a sec:authorize="hasAuthority('ADMIN')"
+					<td sec:authorize="hasAnyAuthority('ADMIN', 'EDITOR')"><a
+						th:href="@{/getupdateId/(id=${prod.id})}"
+						class="btn btn-primary eBtn">Edit</a> <a
+						sec:authorize="hasAuthority('ADMIN')"
 						th:href="@{/delete/(id=${prod.id})}" class="btn btn-danger dBtn">Delete</a></td>
 				</tr>
 			</tbody>
