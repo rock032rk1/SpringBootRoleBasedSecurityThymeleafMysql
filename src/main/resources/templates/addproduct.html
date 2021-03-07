@@ -11,6 +11,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/dropdownlist.js"></script>		
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -33,8 +34,17 @@
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Login </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">SignIn</a> <a
-							class="dropdown-item" th:href="@{/login}">SignUp</a> <a
+						<a class="dropdown-item ev" href="#">SignIn</a> <a
+							class="dropdown-item sign-up" th:href="@{/login}">SignUp</a> 
+							<a class="dropdown-item">
+							<span style="color: blue" id="us" sec:authentication="name">Username</span>
+							<span id="role" sec:authentication="principal.authorities">Roles</span>
+							</a>
+							<a
+							class="dropdown-item" th:href="@{/product}">List Of Product</a>
+							<a
+							class="dropdown-item user-list" th:href="@{/userList}">List Of User</a>
+							<a
 							class="dropdown-item" th:href="@{/logout}">Logout</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/403}">ContactUs</a>
 				</li>

@@ -2,7 +2,7 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>User Registration Form</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
@@ -34,7 +34,7 @@
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Login </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" th:href="@{/userPage}">SignIn</a> <a
+						<a class="dropdown-item" th:href="@{userPage}">SignIn</a> <a
 							class="dropdown-item" th:href="@{/login}">SignUp</a> <a
 							class="dropdown-item" th:href="@{/logout}">Logout</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/403}">ContactUs</a>
@@ -48,13 +48,13 @@
 		</div>
 	</nav>
 	<div class="container">
-		<h2 style="text-align: center; color: blue">Login Form</h2>
+		<h2 style="text-align: center; color: blue">User Registration Form</h2>
 
 		<div class="row">
-		<!--  <h5 th:text="${add}"></h5> -->
+		 <h5 th:text="${add}"></h5>
 			<div class="col-md-3"></div>
 			<div class="col-md-6">
-				<form th:action="@{/login}" method="post">
+				<form th:action="@{/saveUser}" method="post">
 					<div class="form-group">
 						<label for="username">Username:</label> <input type="text"
 							class="form-control" id="username" placeholder="Enter Username"
@@ -65,11 +65,21 @@
 							class="form-control" id="pwd" placeholder="Enter password"
 							name="password">
 					</div>
-					<div class="checkbox">
+				    <div class="form-group">
+						<label for="roles">Roles:</label> 
+						<select id="role" name="role" class="form-control">
+						  <option value="#">-----Select Roles-----</option>
+						  <option value="USER">USER</option>
+						  <option value="ADMIN">ADMIN</option> 
+						</select>
+					</div>
+					<div class="checkbox" style="text-align: right;">
 						<label><input type="checkbox" name="remember">
 							Remember me</label>
 					</div>
-					<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
+					<div style="text-align: right;">
+					<button type="submit" value="submit" class="btn btn-primary">Submit</button>
+					</div>
 				</form>
 			</div>
 			<div class="col-md-3"></div>

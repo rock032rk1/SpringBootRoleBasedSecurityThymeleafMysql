@@ -100,9 +100,9 @@ public class ProductController {
 		return "403";
 	}
 	
-	@GetMapping("/login")
-	public String loginPage() {
-
-		return "login";
-	}
+//	@GetMapping("/login")
+//	public String loginPage() {
+//
+//		return "login";
+//	}
 }

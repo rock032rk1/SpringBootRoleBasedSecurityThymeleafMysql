@@ -1,8 +1,10 @@
 package com.springbootrolebasedsecurity.app.model;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,23 +23,25 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(length = 30,unique = true)
 	private String username;
+	@Column(length = 150)
 	private String password;
-	private boolean enable;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Roles> roles;
+	//@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role",joinColumns = @JoinColumn(name="user_id"),
+	              inverseJoinColumns = @JoinColumn(name="role_id"))
+	private List<Roles> roles;
 
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public User(String username, String password, boolean enable, Set<Roles> roles) {
+	public User(String username, String password, List<Roles> roles) {
 		super();
 		this.username = username;
 		this.password = password;
-		this.enable = enable;
 		this.roles = roles;
 	}
 
@@ -64,22 +69,12 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<Roles> getRoles() {
+	public List<Roles> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<Roles> roles) {
+	public void setRoles(List<Roles> roles) {
 		this.roles = roles;
 	}
-
-	public boolean isEnable() {
-		return enable;
-	}
-
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
-
-	
 
 }

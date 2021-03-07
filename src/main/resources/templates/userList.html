@@ -11,10 +11,10 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/dropdownlist.js"></script>		
 </head>
 <body>
-
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="#">SpringBoot</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
@@ -34,9 +34,11 @@
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Login </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" th:href="@{/userPage}">SignIn</a> <a
-							class="dropdown-item" th:href="@{/login}">SignUp</a> <a
-							class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+						<a class="dropdown-item ev" href="#">SignIn</a> <a
+							class="dropdown-item sign-up" th:href="@{/login}">SignUp</a> <a
+							class="dropdown-item" th:href="@{/logout}">Logout</a>
+							<a
+							class="dropdown-item" th:href="@{/product}">List Of Product</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/403}">ContactUs</a>
 				</li>
 			</ul>
@@ -48,32 +50,36 @@
 		</div>
 	</nav>
 	<div class="container">
-		<h2 style="text-align: center; color: blue">Login Form</h2>
-
-		<div class="row">
-		<!--  <h5 th:text="${add}"></h5> -->
-			<div class="col-md-3"></div>
-			<div class="col-md-6">
-				<form th:action="@{/login}" method="post">
-					<div class="form-group">
-						<label for="username">Username:</label> <input type="text"
-							class="form-control" id="username" placeholder="Enter Username"
-							name="username">
-					</div>
-					<div class="form-group">
-						<label for="pwd">Password:</label> <input type="password"
-							class="form-control" id="pwd" placeholder="Enter password"
-							name="password">
-					</div>
-					<div class="checkbox">
-						<label><input type="checkbox" name="remember">
-							Remember me</label>
-					</div>
-					<button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-				</form>
-			</div>
-			<div class="col-md-3"></div>
-		</div>
+		<h2 id="pr" style="text-align: center;color: red">User List</h2>
+		<h4 th:text="${login}" class="text-success"
+			style="text-align: center;"></h4>
+		<div sec:authorize="isAuthenticated()"
+			style="text-align: center; color: blue">
+			Welcome <b><span id="us" sec:authentication="name">Username</span></b> &nbsp;
+			<i><span sec:authentication="principal.authorities">Roles</span></i>
+		</div>&nbsp;
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>ID:</th>
+					<th>USERNAME:</th>
+					<th>ROLES:</th>
+					<th sec:authorize="hasAnyAuthority('ADMIN','EDITOR')">Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="prod : ${plist}">
+					<td th:text="${prod[0]}"></td>
+					<td th:text="${prod[1]}"></td>
+					<td th:text="${prod[3]}"></td>
+					<td sec:authorize="hasAnyAuthority('ADMIN')"><a
+						th:href="@{/userUpdateById/(id=${prod[0]})}"
+						class="btn btn-primary eBtn">Edit</a> <a
+						sec:authorize="hasAuthority('ADMIN')"
+						th:href="@{/deleteuser/(id=${prod[0]})}" class="btn btn-danger dBtn">Delete</a></td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>
