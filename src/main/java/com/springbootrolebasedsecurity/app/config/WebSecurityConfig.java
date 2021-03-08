@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.springbootrolebasedsecurity.app.service.UserDetalisServiceImpl;
 @Configuration
@@ -44,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
           
          http.csrf().disable()
              .authorizeRequests()
-             .antMatchers("/userPage","/userList","/saveUser","/updateU").permitAll()
+             .antMatchers("/userPage","/saveUser").permitAll()
              .antMatchers("/","/login").hasAnyAuthority("USER","ADMIN","EDITOR")
              .antMatchers("/new").hasAnyAuthority("ADMIN", "EDITOR")
              .antMatchers("/updateP").hasAnyAuthority("ADMIN", "EDITOR")
@@ -53,8 +54,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
              .and()
              .formLogin().loginPage("/login").permitAll()
              .and()
-             .logout().permitAll()
+             .logout().invalidateHttpSession(true)
+      		 .clearAuthentication(true)
+      		 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+      		 .logoutSuccessUrl("/login").permitAll()
              .and()
              .exceptionHandling().accessDeniedPage("/403");
+             
+//             .logout().permitAll()
+//             .and()
+//             .exceptionHandling().accessDeniedPage("/403");
+         
+         
+//         .logout().invalidateHttpSession(true)
+// 		.clearAuthentication(true)
+// 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+// 		.logoutSuccessUrl("/login").permitAll();
 	}
 }

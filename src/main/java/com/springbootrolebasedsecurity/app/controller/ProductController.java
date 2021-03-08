@@ -1,6 +1,7 @@
 package com.springbootrolebasedsecurity.app.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springbootrolebasedsecurity.app.model.Product;
@@ -59,15 +61,22 @@ public class ProductController {
 		return "redirect:/product";
 	}
 
+//	@GetMapping("/getupdateId")
+//	public String updateProductPage(Integer id, Model model) {
+//
+//		List<Product> plist = productRepo.findAll();
+//		Product p = plist.stream().filter(product -> id.equals(product.getId())).findAny().orElse(null);
+//
+//		model.addAttribute("p", p);
+//
+//		return "upproduct";
+//	}
+	
 	@GetMapping("/getupdateId")
-	public String updateProductPage(Integer id, Model model) {
-
-		List<Product> plist = productRepo.findAll();
-		Product p = plist.stream().filter(product -> id.equals(product.getId())).findAny().orElse(null);
-
-		model.addAttribute("p", p);
-
-		return "upproduct";
+	@ResponseBody
+	public Optional<Product> getProductById(Integer id) {
+		
+		return productRepo.findById(id);
 	}
 
 	@PostMapping("/updateP")

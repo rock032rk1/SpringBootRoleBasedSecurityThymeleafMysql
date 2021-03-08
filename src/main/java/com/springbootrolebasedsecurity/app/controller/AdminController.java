@@ -2,6 +2,7 @@ package com.springbootrolebasedsecurity.app.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springbootrolebasedsecurity.app.model.Roles;
 import com.springbootrolebasedsecurity.app.model.User;
@@ -64,18 +66,24 @@ public class AdminController {
 		return "userList";
 	}
 	
+//	@GetMapping("/userUpdateById")
+//	public String getUpdatePage(Integer id,Model model) {
+//		
+//		List<User> ulist=userRepo.findAll();
+//		User user=ulist.stream()
+//				  .filter(u->id.equals(u.getId()))
+//				  .findAny().orElse(null);
+//				  
+//		model.addAttribute("u", user);
+//		
+//		return "userupdate";
+//	}
+	
 	@GetMapping("/userUpdateById")
-	public String getUpdatePage(Integer id,Model model) {
+	@ResponseBody
+	public Optional<User> getUserById(Integer id) {
 		
-		List<User> ulist=userRepo.findAll();
-		User user=ulist.stream()
-				  .filter(u->id.equals(u.getId()))
-				  .findAny().orElse(null);
-				  
-		model.addAttribute("u", user);
-		
-		//return "userUpdateForm";
-		return "userupdate";
+		return userRepo.findById(id);
 	}
 	
 	@PostMapping("/updateU")
@@ -93,7 +101,7 @@ public class AdminController {
 		List <Object[]> ulist=jpa.updateById();
 		model.addAttribute("plist", ulist);
 		
-		return "userList";	
+		return "redirect:/userList";	
 	}
 	
 	@GetMapping("/deleteuser")

@@ -12,7 +12,8 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/dropdownlist.js"></script>	
+<script type="text/javascript" src="js/dropdownlist.js"></script>
+<script type="text/javascript" src="js/product.js"></script>		
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -67,7 +68,7 @@
 			</form>
 			&nbsp; -->
 			<div sec:authorize="hasAnyAuthority('ADMIN','EDITOR')">
-				<a th:href="@{/new}" class="btn btn-success">Create New Product</a>
+				<a class="btn btn-success nBtn">Create New Product</a>
 				<h5 th:text="${deletemsg}" class="text-success"
 					style="text-align: center;"></h5>
 			</div>
@@ -98,5 +99,109 @@
 			</tbody>
 		</table>
 	</div>
+	<!-- add model start -->
+	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/addProduct}" method="post">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">New Product</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="pname" class="col-form-label">Product Name:</label> <input
+									type="text" class="form-control" id="pname" name="pname">
+							</div>
+							<div class="form-group">
+								<label for="categary" class="col-form-label">Category:</label>
+								<input type="text" class="form-control" id="categary"
+									name="categary">							
+							</div>
+							<div class="form-group">
+								<label for="price" class="col-form-label">Price:</label>
+								<input type="text" class="form-control" id="price"
+									name="price">							
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Save</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- add model ends -->
+		<!--   edit model -->
+		<div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<form th:action="@{/updateP}" method="post">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<div class="form-group">
+								<input type="hidden" class="form-control" id="editid" name="id">
+							</div>
+							<div class="form-group">
+								<label for="pname" class="col-form-label">Product Name:</label> <input
+									type="text" class="form-control" id="editpname" name="pname">
+							</div>
+							<div class="form-group">
+								<label for="categary" class="col-form-label">Category:</label>
+								<input type="text" class="form-control" id="editcategary"
+									name="categary">
+							</div>
+							<div class="form-group">
+								<label for="price" class="col-form-label">Price:</label>
+								<input type="text" class="form-control" id="editprice"
+									name="price">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Update</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<!-- edit model ends -->
+		<!--  delete Model start -->
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title text-danger" id="exampleModalLabel">Delete
+							Product</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p class="alert alert-danger">Are You Sure You Want To Delete the Product</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<a href="" class="btn btn-danger" id="delBtn">Delete</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- delete model ends -->
+	
 </body>
 </html>
