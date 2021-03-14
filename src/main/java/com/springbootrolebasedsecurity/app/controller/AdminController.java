@@ -16,9 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.springbootrolebasedsecurity.app.model.CIty;
+import com.springbootrolebasedsecurity.app.model.Country;
 import com.springbootrolebasedsecurity.app.model.Roles;
+import com.springbootrolebasedsecurity.app.model.State;
 import com.springbootrolebasedsecurity.app.model.User;
+import com.springbootrolebasedsecurity.app.repository.CitiRepository;
+import com.springbootrolebasedsecurity.app.repository.CountryRepository;
 import com.springbootrolebasedsecurity.app.repository.RolesRepository;
+import com.springbootrolebasedsecurity.app.repository.StateRepository;
 import com.springbootrolebasedsecurity.app.repository.UserRepository;
 import com.springbootrolebasedsecurity.app.service.JpaQueryJoin;
 
@@ -31,6 +37,12 @@ public class AdminController {
 	private BCryptPasswordEncoder passEncoder;
 	@Autowired
 	private JpaQueryJoin jpa;
+	@Autowired
+	private CountryRepository countryRepo;
+	@Autowired
+	private StateRepository stateRepo;
+	@Autowired
+	private CitiRepository cityRepo; 
 
 //	@GetMapping("/userPage")
 //	public String getRegistPage() {
@@ -79,16 +91,30 @@ public class AdminController {
 //		return "userupdate";
 //	}
 	
-	@GetMapping("/userUpdateById")
-	@ResponseBody
-	public Optional<User> getUserById(Integer id) {
+//	@GetMapping("/userUpdateById")
+//	@ResponseBody
+	public String getUserById(Integer id,Model model) {
 		
-		return userRepo.findById(id);
+//		Integer cid=1;
+//		List<Country> clist=countryRepo.findAll();
+//		Country c=clist.stream()
+//				.filter(country->cid.equals(country.getId()))
+//				.findAny()
+//				.orElse(null);
+		//Optional<Country> c=countryRepo.findById(cid);
+		//List<State> slist=stateRepo.findAll();
+		
+//		model.addAttribute("c", c);
+//		model.addAttribute("slist", slist);
+		
+		//return userRepo.findById(id);
+		return "updateuser";
 	}
 	
 	@PostMapping("/updateU")
-	public String updateUser(User user,Roles r,Model model,HttpServletRequest req) {
+	public String updateUser(User user,Roles r,Country c,State s,CIty ct,Model model,HttpServletRequest req) {
 		
+		//For User Save Operation
 		String role=req.getParameter("role");
 		r.setRoles(role);
 		List<Roles> urole=new ArrayList<Roles>();
@@ -98,6 +124,26 @@ public class AdminController {
 		user.setPassword(req.getParameter("password"));
 		user.setRoles(urole);
 		userRepo.save(user);
+		
+		//For Country Save Operation
+		c.setCountry_Name(req.getParameter("country_Name"));
+		c.setCountry_code(req.getParameter("country_code"));
+		countryRepo.save(c);
+		int id=c.getId();
+		//For State Save Operation
+		s.setState_name(req.getParameter("state_name"));
+		s.setCountryid(id);
+		stateRepo.save(s);
+		List<State> slist=new ArrayList<State>();
+		slist.add(s);
+		c.setStates(slist);
+		//For City Save Operation
+		ct.setCity_name(req.getParameter("city_name"));
+		ct.setStateid(id);
+		cityRepo.save(ct);
+		List<CIty> ctlist=new ArrayList<CIty>();
+		ctlist.add(ct);
+		s.setCities(ctlist);
 		List <Object[]> ulist=jpa.updateById();
 		model.addAttribute("plist", ulist);
 		

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Ajax Page</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/dropdownlist.js"></script>
+<script type="text/javascript" th:src="@{js/ajaxapp.js}"></script>
+</head>
+<body>
+	<h3>Spring MVC Ajax Example</h3>
+	<form>
+		Enter Name: <input type="text" name="name" id="name">
+	</form>
+	<br>
+	<br>
+	<h4>Response From Server</h4>
+	<br>
+	<br>
+	<div id="responseDiv"></div>
+	<br>
+	<br>
+	<button type="button" value="Hello" id="helloBtn">Hello</button>
+	<br>
+	<br>
+	<div class="result"></div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#helloBtn').click(function() {
+				$.ajax({
+					type : 'POST',
+					contentType : "application/json",
+					//data: JSON.stringify(search),
+					url : '/helloajax',
+					//dataType : 'json',
+					success : function(data) {
+						$('.result').html(data);
+					}
+				});
+			});
+		});
+	</script>
+</body>
+</html>

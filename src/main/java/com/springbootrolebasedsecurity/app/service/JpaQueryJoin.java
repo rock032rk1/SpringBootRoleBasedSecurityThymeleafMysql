@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.springbootrolebasedsecurity.app.model.CIty;
 import com.springbootrolebasedsecurity.app.model.Roles;
+import com.springbootrolebasedsecurity.app.model.State;
 import com.springbootrolebasedsecurity.app.model.User;
 import com.springbootrolebasedsecurity.app.repository.JpaQuery;
 import com.springbootrolebasedsecurity.app.repository.UserRepository;
@@ -54,6 +56,32 @@ public class JpaQueryJoin implements JpaQuery{
 		em.close();
 		
 		return ulist;
+	}
+
+	@Transactional
+	public List<State> findByCountry(int id) {
+		// TODO Auto-generated method stub
+		EntityManager em=emf.createEntityManager();
+		String hql="SELECT s.id, s.state_name FROM State s WHERE s.countryid=:countryid";
+		@SuppressWarnings("unchecked")
+		Query<State> query=(Query<State>) em.createQuery(hql);
+		query.setParameter("countryid", id);
+		List<State> slist=query.getResultList();
+		
+		return slist;
+	}
+
+	@Transactional
+	public List<CIty> findByState(int id) {
+		// TODO Auto-generated method stub
+		EntityManager em=emf.createEntityManager();
+		String hql="SELECT c.id, c.city_name FROM CIty c WHERE c.stateid=:stateid";
+		@SuppressWarnings("unchecked")
+		Query<CIty> query=(Query<CIty>) em.createQuery(hql);
+		query.setParameter("stateid", id);
+		List<CIty> clist=query.getResultList();
+		
+		return clist;
 	}
 
 

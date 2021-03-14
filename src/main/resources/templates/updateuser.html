@@ -3,18 +3,61 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/dropdownlist.js"></script>
-<!-- <script type="text/javascript" src="js/user.js"></script> -->
+<script type="text/javascript" th:src="@{js/dropdownlist.js}"></script>
+<!-- <script type="text/javascript" th:src="@{js/statecitylist.js}"></script> -->
 </head>
 <body>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+    	$('#countryid').on('change', function(event){
+    		event.preventDefault();
+    		var countryId = $('#countryid').val();
+    		
+    		$.ajax({
+    			type: 'GET',
+    			contentType : "application/json",
+    			url: '/loadStatesByCountry/' + countryId,
+    			success: function(result) {
+    				var result = JSON.parse(result);
+    				var s = '';
+    				for(var i = 0; i < result.length; i++) {
+    					//var id= result[i].id;
+    					s += '<option value="' + result[i].id + '">' + result[i].state_name + '</option>';
+    				}
+    				$('#statebox').html(s);
+    			}
+    		});
+    	});
+
+    	$('#statebox').on('change', function(){
+    		var stateId = $('#statebox').val();
+    		$.ajax({
+    			type: 'GET',
+    			contentType : "application/json",
+    			url: '/loadCitiesByState/' + stateId,
+    			success: function(result) {
+    				var result = JSON.parse(result);
+    				var s = '';
+    				for(var i = 0; i < result.length; i++) {
+    					s += '<option value="' + result[i].id + '">' + result[i].city_name + '</option>';
+    				}
+    				$('#comboboxCity').html(s);
+    			}
+    		});
+    	});
+
+    });
+
+    </script>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="#">SpringBoot</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -38,10 +81,7 @@
 						<a class="dropdown-item ev" href="#">SignIn</a> <a
 							class="dropdown-item sign-up" th:href="@{/login}">SignUp</a> <a
 							class="dropdown-item" th:href="@{/logout}">Logout</a> <a
-							class="dropdown-item" th:href="@{/product}">List Of Product</a>
-							<a
-							class="dropdown-item" th:href="@{/ajaxwish}">Ajax Page</a>
-							</li>
+							class="dropdown-item" th:href="@{/product}">List Of Product</a></li>
 				<li class="nav-item"><a class="nav-link" th:href="@{/403}">ContactUs</a>
 				</li>
 			</ul>
@@ -61,46 +101,10 @@
 			Welcome <b><span id="us" sec:authentication="name">Username</span></b>
 			&nbsp; <i><span sec:authentication="principal.authorities">Roles</span></i>
 		</div>
-		&nbsp;
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>ID:</th>
-					<th>USERNAME:</th>
-					<th>ROLES:</th>
-					<th sec:authorize="hasAnyAuthority('ADMIN','EDITOR')">Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="prod : ${plist}">
-					<td th:text="${prod[0]}"></td>
-					<td th:text="${prod[1]}"></td>
-					<td th:text="${prod[3]}"></td>
-					<td sec:authorize="hasAnyAuthority('ADMIN')"><a
-						th:href="@{/userUpdateById/(id=${prod[0]})}"
-						class="btn btn-primary eBtn">Edit</a> <a
-						sec:authorize="hasAuthority('ADMIN')"
-						th:href="@{/deleteuser/(id=${prod[0]})}"
-						class="btn btn-danger dBtn">Delete</a></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-
-	<!--   edit model -->
-	<!-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<form th:action="@{/updateU}" method="post">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+			 <form th:action="@{/save}" method="post">
 						<div class="form-group">
 							<input type="hidden" class="form-control" id="editid" name="id">
 						</div>
@@ -122,70 +126,61 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="country_Name" class="col-form-label">Country:</label> <input
-								type="text" class="form-control" id="country_Name"
-								name="country_Name" th:value="${country_Name}">
+							<label for="country_Name" class="col-form-label">Country:</label> <!-- <input
+								type="text" class="form-control" id="countryid"
+								name="country_Name"> -->
+								<select id="countryid" name="" class="form-control">
+								  <option value="#">-------Select Country------</option>
+								  <tr th:each="country :${countries}">
+								    <option th:value="${country.id}">[[${country.country_Name}]]</option>
+								   </tr>
+								</select>
 						</div>
 						<div class="form-group">
-							<label for="country_code" class="col-form-label">Country Code:</label> <input
-								type="text" class="form-control" id=""
-								name="country_code" th:value="${country_code}">
+						 <input
+								type="hidden" class="form-control" id=""
+								name="country_code">
 						</div>
 						<div class="form-group">
-							<label for="state_name" class="col-form-label">State:</label> <input
-								type="text" class="form-control" id=""
-								name="state_name">
-						</div>
-						<div class="form-group">
-							<label for="state_name">Roles:</label> <select id="role" name="role" th:each="state :${slist}"
-								class="form-control">
-								<option value="#">-----Select Roles-----</option>
-								<option th:text="${state.state_name}"></option>
-							</select>
-						<div class="form-group">
+							<label for="state_name">State:</label> 
+							<select id="statebox" name="state_name" class="form-control">
+							<!-- <option value="#">-----Select State-----</option>
+							<tr th:each="state :${slist}">
+								<option id="st" th:value="${state.id}"></option>
+							</tr> -->
+							</select>							
+						</div>	
+						<!-- <div class="form-group">
 							<input type="hidden" class="form-control" id="editcountryid" name="countryid">
-						</div>
+						</div> -->
 						<div class="form-group">
-							<label for="city_name" class="col-form-label">City:</label> <input
+							<label for="city_name" class="col-form-label">City:</label> 
+							<!-- <input
 								type="text" class="form-control" id=""
-								name="city_name">
+								name="city_name"> -->
+							<select id="comboboxCity" style="width:200px"></select>	
 						</div>
-						<div class="form-group">
+						<!-- <div class="form-group">
 							<input type="hidden" class="form-control" id="editstateid" name="stateid">
-						</div>
-					</div>
+						</div> -->
+					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-primary">Update</button>
 					</div>
-				</div>
-			</div>
 		</form>
-	</div> -->
-	<!-- edit model ends -->
-	<!--  delete Model start -->
-		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
-			aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title text-danger" id="exampleModalLabel">Delete
-							User</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<p class="alert alert-danger">Are You Sure You Want To Delete the User</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<a href="" class="btn btn-danger" id="delBtn">Delete</a>
-					</div>
-				</div>
 			</div>
+			<div class="col-md-3"></div>
 		</div>
-		<!-- delete model ends -->
+	</div>
+
+     <script type="text/javascript">
+       $(document).ready(function(){
+    	   $('#st').on('click',function(){
+    		   var state=$('#role1').val();
+    		   alert(state);
+    	   });
+       });
+     </script>
 </body>
 </html>
