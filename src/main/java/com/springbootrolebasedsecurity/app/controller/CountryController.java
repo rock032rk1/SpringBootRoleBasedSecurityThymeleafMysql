@@ -2,6 +2,9 @@ package com.springbootrolebasedsecurity.app.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.springbootrolebasedsecurity.app.model.CIty;
 import com.springbootrolebasedsecurity.app.model.State;
 import com.springbootrolebasedsecurity.app.repository.CitiRepository;
 import com.springbootrolebasedsecurity.app.repository.CountryRepository;
@@ -38,13 +42,15 @@ public class CountryController {
 //		int id=1;
 //		List<State> slist=jpaRepo.findByCountry(id);
 		modelMap.put("countries", countryRepo.findAll());
+		modelMap.put("cities", cityRepo.findAll());
 		return "updateuser";
 	}
 
-	@RequestMapping(value = "/loadStatesByCountry/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/loadStatesByCountry/{stateId}", method = RequestMethod.GET)
 	@ResponseBody
-	public String loadStatesByCountry(@PathVariable("id") int id) {
+	public String loadStatesByCountry(@PathVariable("stateId") Integer id) {
 		Gson gson = new Gson();
+	
 		return gson.toJson(jpaRepo.findByCountry(id));
 		//return jpaRepo.findByCountry(id);
 	}
@@ -53,7 +59,10 @@ public class CountryController {
 	@ResponseBody
 	public String loadCitiesByState(@PathVariable("id") int id) {
 		Gson gson = new Gson();
-		return gson.toJson(jpaRepo.findByState(id));
+
+		int cid=id;
+		int tot=1+cid;
+		return gson.toJson(jpaRepo.findByState(tot));
 		//return null;
 	}
 	
@@ -78,6 +87,20 @@ public class CountryController {
 	public String wish() {
 		
 		return "Hello Ajax";
+	}
+	
+	@RequestMapping(value="/getCityById/{id}",method = RequestMethod.GET)
+	@ResponseBody
+	public String getCityById(@PathVariable("id") Integer id) {
+		List<CIty> clist=cityRepo.findAll();
+		
+		CIty c=clist.stream()
+				.filter(city->id.equals(city.getId()))
+				.findAny()
+				.orElse(null);
+		Gson gson = new Gson();
+		return gson.toJson(c);
+		//return c;
 	}
 
 

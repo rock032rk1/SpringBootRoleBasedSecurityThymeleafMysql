@@ -11,5 +11,6 @@ public interface JpaQuery {
 	public List<Object[]> updateById();
 	public List<State> findByCountry(int id);
 	public List<CIty> findByState(int id);
+	public List<CIty> findStateById(int id);
 	
 }

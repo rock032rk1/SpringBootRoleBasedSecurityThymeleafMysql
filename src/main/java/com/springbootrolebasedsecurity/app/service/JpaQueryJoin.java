@@ -62,7 +62,7 @@ public class JpaQueryJoin implements JpaQuery{
 	public List<State> findByCountry(int id) {
 		// TODO Auto-generated method stub
 		EntityManager em=emf.createEntityManager();
-		String hql="SELECT s.id, s.state_name FROM State s WHERE s.countryid=:countryid";
+		String hql="SELECT s.state_name FROM State s WHERE s.countryid=:countryid";
 		@SuppressWarnings("unchecked")
 		Query<State> query=(Query<State>) em.createQuery(hql);
 		query.setParameter("countryid", id);
@@ -75,13 +75,21 @@ public class JpaQueryJoin implements JpaQuery{
 	public List<CIty> findByState(int id) {
 		// TODO Auto-generated method stub
 		EntityManager em=emf.createEntityManager();
-		String hql="SELECT c.id, c.city_name FROM CIty c WHERE c.stateid=:stateid";
+		String hql="SELECT c.city_name FROM CIty c WHERE c.stateid=:stateid";
 		@SuppressWarnings("unchecked")
 		Query<CIty> query=(Query<CIty>) em.createQuery(hql);
 		query.setParameter("stateid", id);
 		List<CIty> clist=query.getResultList();
 		
 		return clist;
+	}
+
+	@Override
+	public List<CIty> findStateById(int id) {
+		// TODO Auto-generated method stub
+		EntityManager em=emf.createEntityManager();
+		//Query<CIty> query=em.createQuery("from CIty",CIty.class);
+		return null;
 	}
 
 

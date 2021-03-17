@@ -1,24 +1,32 @@
 $(document).ready(function(){
 
 	$('#countryid').on('change', function(){
-		var countryId = $(this).val();
+		
+		var countryId = $('#countryid').val();
+		
 		$.ajax({
 			type: 'GET',
 			contentType : "application/json",
 			url: '/loadStatesByCountry/' + countryId,
 			success: function(result) {
+				
 				var result = JSON.parse(result);
 				var s = '';
-				for(var i = 0; i < result.length; i++) {
-					s += '<option value="' + result[i].id + '">' + result[i].state_name + '</option>';
-				}
+				$.each( result, function( key, value ) {
+				    s += '<option value='+key+'>' + value + '</option>';
+				});
+//				for(var i = 0; i < result.length; i++) {
+//					s += '<option value="' + result[i] + '">' + result[i] + '</option>';
+//				}
+
 				$('#statebox').html(s);
 			}
 		});
 	});
 
+
 	$('#statebox').on('change', function(){
-		var stateId = $(this).val();
+		var stateId = $('#statebox').val();
 		$.ajax({
 			type: 'GET',
 			contentType : "application/json",
@@ -26,9 +34,12 @@ $(document).ready(function(){
 			success: function(result) {
 				var result = JSON.parse(result);
 				var s = '';
-				for(var i = 0; i < result.length; i++) {
-					s += '<option value="' + result[i].id + '">' + result[i].city_name + '</option>';
-				}
+				$.each( result, function( key, value ) {
+				    s += '<option value='+key+'>' + value + '</option>';
+				});
+//				for(var i = 0; i < result.length; i++) {
+//					s += '<option value>' + result[i] + '</option>';
+//				}
 				$('#comboboxCity').html(s);
 			}
 		});
