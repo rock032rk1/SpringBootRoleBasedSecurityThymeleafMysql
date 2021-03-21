@@ -6,10 +6,12 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springbootrolebasedsecurity.app.model.Product;
+import com.springbootrolebasedsecurity.app.repository.JpaQuery;
 import com.springbootrolebasedsecurity.app.repository.ProductRepository;
 
 @Controller
@@ -25,6 +28,8 @@ public class ProductController {
 
 	@Autowired
 	private ProductRepository productRepo;
+	@Autowired
+	private JpaQuery jpaRepo;
 
 	@GetMapping("/")
 	public String productPage(Model model, RedirectAttributes rd) {
@@ -34,14 +39,27 @@ public class ProductController {
 
 		rd.addFlashAttribute("login", "Login Successfully");
 
-		// return "addproduct";
-		return "product";
+		return getPagination(1, model);
 	}
 
 	@GetMapping("/product")
 	public String showList(Model model) {
 		
-		List<Product> plist = productRepo.findAll();
+
+		return getPagination(1, model);
+		
+	}
+	
+	@GetMapping("/product/{pageNo}")
+	public String getPagination(@PathVariable(value = "pageNo") int pageNo,Model model) {
+		
+		int pageSize=2;
+		Page<Product> page=jpaRepo.findPagination(pageNo, pageSize);
+		List<Product> plist=page.getContent();
+		
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPage", page.getTotalPages());
+		model.addAttribute("totalItem", page.getTotalElements());
 		model.addAttribute("plist", plist);
 		
 		return "product";
@@ -109,9 +127,4 @@ public class ProductController {
 		return "403";
 	}
 	
-//	@GetMapping("/login")
-//	public String loginPage() {
-//
-//		return "login";
-//	}
 }

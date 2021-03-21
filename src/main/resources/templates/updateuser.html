@@ -146,9 +146,7 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<label for="country_Name" class="col-form-label">Country:</label> <!-- <input
-								type="text" class="form-control" id="countryid"
-								name="country_Name"> -->
+							<label for="country_Name" class="col-form-label">Country:</label>
 								<select id="countryid" name="" class="form-control">
 								  <option value="#">-------Select Country------</option>
 								  <tr th:each="country :${countries}">
@@ -165,27 +163,14 @@
 							<label for="state_name">State:</label> 
 							<select id="statebox" name="state_name" class="form-control">
 							 <option value="#">-----Select State-----</option>
-							<!-- <tr th:each="state :${slist}">
-								<option id="st" th:value="${state.id}"></option>
-							</tr>  -->
 							</select>							
 						</div>	
-						<!-- <div class="form-group">
-							<input type="hidden" class="form-control" id="editcountryid" name="countryid">
-						</div> -->
 						<div class="form-group">
 							<label for="city_name" class="col-form-label">City:</label> 
-							<!-- <input
-								type="text" class="form-control" id=""
-								name="city_name"> -->
 							<select id="comboboxCity" class="form-control" name="city_name">
 							</select>	
 						</div>
-						<!-- <div class="form-group">
-							<input type="hidden" class="form-control" id="editstateid" name="stateid">
-						</div> -->
 						
-					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-primary">Update</button>

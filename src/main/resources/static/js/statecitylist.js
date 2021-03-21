@@ -13,6 +13,7 @@ $(document).ready(function(){
 				var result = JSON.parse(result);
 				var s = '';
 				$.each( result, function( key, value ) {
+//					 s+= '<option ='#'>---Select State---</option>';
 				    s += '<option value='+key+'>' + value + '</option>';
 				});
 //				for(var i = 0; i < result.length; i++) {

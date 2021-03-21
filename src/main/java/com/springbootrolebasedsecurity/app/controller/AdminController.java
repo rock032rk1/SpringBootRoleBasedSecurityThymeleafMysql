@@ -44,13 +44,6 @@ public class AdminController {
 	@Autowired
 	private CitiRepository cityRepo; 
 
-//	@GetMapping("/userPage")
-//	public String getRegistPage() {
-//
-//		return "registration";
-//	}
-	
-	//@PostMapping("/saveUser")
 	@RequestMapping(value="/saveUser", method= {RequestMethod.POST, RequestMethod.GET})
 	public String saveUser(User user,HttpServletRequest req) {
 		
@@ -78,38 +71,6 @@ public class AdminController {
 		return "userList";
 	}
 	
-//	@GetMapping("/userUpdateById")
-//	public String getUpdatePage(Integer id,Model model) {
-//		
-//		List<User> ulist=userRepo.findAll();
-//		User user=ulist.stream()
-//				  .filter(u->id.equals(u.getId()))
-//				  .findAny().orElse(null);
-//				  
-//		model.addAttribute("u", user);
-//		
-//		return "userupdate";
-//	}
-	
-//	@GetMapping("/userUpdateById")
-//	@ResponseBody
-	public String getUserById(Integer id,Model model) {
-		
-//		Integer cid=1;
-//		List<Country> clist=countryRepo.findAll();
-//		Country c=clist.stream()
-//				.filter(country->cid.equals(country.getId()))
-//				.findAny()
-//				.orElse(null);
-		//Optional<Country> c=countryRepo.findById(cid);
-		//List<State> slist=stateRepo.findAll();
-		
-//		model.addAttribute("c", c);
-//		model.addAttribute("slist", slist);
-		
-		//return userRepo.findById(id);
-		return "updateuser";
-	}
 	
 	@PostMapping("/updateU")
 	public String updateUser(User user,Roles r,Country c,State s,CIty ct,Model model,HttpServletRequest req) {

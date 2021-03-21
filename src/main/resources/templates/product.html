@@ -9,11 +9,11 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/dropdownlist.js"></script>
-<script type="text/javascript" src="js/product.js"></script>		
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>	
+<script type="text/javascript" src="/js/dropdownlist.js"></script>
+<script type="text/javascript" src="/js/product.js"></script>		
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -95,9 +95,32 @@
 						class="btn btn-primary eBtn">Edit</a> <a
 						sec:authorize="hasAuthority('ADMIN')"
 						th:href="@{/delete/(id=${prod.id})}" class="btn btn-danger dBtn">Delete</a></td>
+					
 				</tr>
+				
 			</tbody>
 		</table>
+		<div th:if="${totalPage > 1}">
+		   <div class="row col-sm-10">
+		    <div class="col-sm-2">
+		    Total Rowa : [[${totalItem}]]
+		    </div>
+		    <div class="col-sm-3">
+		      <span th:each="i: ${#numbers.sequence(1, totalPage)}">
+		      <a th:if="${currentPage !=i}" th:href="@{'/product/' + ${i}}">[[${i}]]</a>
+		      <span th:unless="${currentPage !=i}">[[${i}]]</span>&nbsp;&nbsp;
+		      </span>
+		    </div>
+		    <div class="col-sm-1">
+		    <a th:if="${currentPage < totalPage}" th:href="@{'/product/' + ${currentPage + 1}}">Next</a>
+		    <span th:unless="${currentPage < totalPage}">Next</span>
+		    </div>
+		     <div class="col-sm-1">
+		    <a th:if="${currentPage < totalPage}" th:href="@{'/product/' + ${totalPage}}">Last</a>
+		    <span th:unless="${currentPage < totalPage}">Last</span>
+		    </div>
+		   </div>
+		</div>
 	</div>
 	<!-- add model start -->
 	<div class="modal fade" id="addModal" tabindex="-1" role="dialog"

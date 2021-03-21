@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.springbootrolebasedsecurity.app.model.CIty;
 import com.springbootrolebasedsecurity.app.model.State;
+import com.springbootrolebasedsecurity.app.model.User;
 import com.springbootrolebasedsecurity.app.repository.CitiRepository;
 import com.springbootrolebasedsecurity.app.repository.CountryRepository;
 import com.springbootrolebasedsecurity.app.repository.JpaQuery;
 import com.springbootrolebasedsecurity.app.repository.StateRepository;
+import com.springbootrolebasedsecurity.app.repository.UserRepository;
 
 @Controller
 public class CountryController {
@@ -34,17 +36,10 @@ public class CountryController {
 	private CitiRepository cityRepo;
 	@Autowired
 	private JpaQuery jpaRepo;
+	@Autowired
+	private UserRepository userRepo;
 	
 	
-	//@RequestMapping(method = RequestMethod.GET)
-	@GetMapping("/userUpdateById")
-	public String index(ModelMap modelMap) {
-//		int id=1;
-//		List<State> slist=jpaRepo.findByCountry(id);
-		modelMap.put("countries", countryRepo.findAll());
-		modelMap.put("cities", cityRepo.findAll());
-		return "updateuser";
-	}
 
 	@RequestMapping(value = "/loadStatesByCountry/{stateId}", method = RequestMethod.GET)
 	@ResponseBody
@@ -52,7 +47,7 @@ public class CountryController {
 		Gson gson = new Gson();
 	
 		return gson.toJson(jpaRepo.findByCountry(id));
-		//return jpaRepo.findByCountry(id);
+		
 	}
 
 	@RequestMapping(value = "/loadCitiesByState/{id}", method = RequestMethod.GET)
@@ -63,7 +58,7 @@ public class CountryController {
 		int cid=id;
 		int tot=1+cid;
 		return gson.toJson(jpaRepo.findByState(tot));
-		//return null;
+		
 	}
 	
 	@RequestMapping("/ajaxwish")
@@ -100,7 +95,20 @@ public class CountryController {
 				.orElse(null);
 		Gson gson = new Gson();
 		return gson.toJson(c);
-		//return c;
+		
+	}
+	
+	@GetMapping("/userUpdateById")
+	@ResponseBody
+	public User getUserById(Integer id) {
+		
+		List<User> ulist=userRepo.findAll();
+		User u=ulist.stream()
+				.filter(user->id.equals(user.getId()))
+				.findAny()
+				.orElse(null);
+		
+		return u;
 	}
 
 

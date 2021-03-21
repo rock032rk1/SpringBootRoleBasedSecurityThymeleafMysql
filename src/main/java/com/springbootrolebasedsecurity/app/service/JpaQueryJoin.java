@@ -4,43 +4,45 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.springbootrolebasedsecurity.app.model.CIty;
-import com.springbootrolebasedsecurity.app.model.Roles;
+import com.springbootrolebasedsecurity.app.model.Product;
 import com.springbootrolebasedsecurity.app.model.State;
-import com.springbootrolebasedsecurity.app.model.User;
 import com.springbootrolebasedsecurity.app.repository.JpaQuery;
-import com.springbootrolebasedsecurity.app.repository.UserRepository;
+import com.springbootrolebasedsecurity.app.repository.ProductRepository;
 @Service
 public class JpaQueryJoin implements JpaQuery{
 
 	@Autowired
 	private EntityManagerFactory emf;
+	@Autowired
+	private ProductRepository productRepo;
 	
-	@Transactional
-	public List<Object[]> JpaList() {
-		// TODO Auto-generated method stub
-		
-		EntityManager em=emf.createEntityManager();
-		String hql="SELECT u.id, u.username, r.roles FROM user_db u INNER JOIN role_db r ON u.id=r.id WHERE r.roles='USER' OR r.roles='EDITOR'";
-		String hql1="SELECT u.id, u.username, r.roles FROM User u INNER JOIN Roles r ON u.id=r.id WHERE r.roles=:USER";
-		@SuppressWarnings("unchecked")
-		List<Object[]> query= em.createNativeQuery(hql).getResultList();
-		@SuppressWarnings("unchecked")
-		Query<Object[]> query1= (Query<Object[]>) em.createQuery(hql1);
-		
-		List<Object[]> ulist=query1.getResultList();
-		
-		em.close();
-		
-		return query;
-	}
+//	@Transactional
+//	public List<Object[]> JpaList() {
+//		// TODO Auto-generated method stub
+//		
+//		EntityManager em=emf.createEntityManager();
+//		String hql="SELECT u.id, u.username, r.roles FROM user_db u INNER JOIN role_db r ON u.id=r.id WHERE r.roles='USER' OR r.roles='EDITOR'";
+//		String hql1="SELECT u.id, u.username, r.roles FROM User u INNER JOIN Roles r ON u.id=r.id WHERE r.roles=:USER";
+//		@SuppressWarnings("unchecked")
+//		List<Object[]> query= em.createNativeQuery(hql).getResultList();
+//		@SuppressWarnings("unchecked")
+//		Query<Object[]> query1= (Query<Object[]>) em.createQuery(hql1);
+//		
+//		List<Object[]> ulist=query1.getResultList();
+//		
+//		em.close();
+//		
+//		return query;
+//	}
 
 	@Transactional
 	public List<Object[]> updateById() {
@@ -84,12 +86,13 @@ public class JpaQueryJoin implements JpaQuery{
 		return clist;
 	}
 
+
 	@Override
-	public List<CIty> findStateById(int id) {
+	public Page<Product> findPagination(int pageNo, int pageSize) {
 		// TODO Auto-generated method stub
-		EntityManager em=emf.createEntityManager();
-		//Query<CIty> query=em.createQuery("from CIty",CIty.class);
-		return null;
+		Pageable pageable=PageRequest.of(pageNo-1, pageSize);
+		
+		return this.productRepo.findAll(pageable);
 	}
 
 

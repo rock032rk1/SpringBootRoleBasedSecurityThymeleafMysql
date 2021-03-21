@@ -11,8 +11,9 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/dropdownlist.js"></script>
-<!-- <script type="text/javascript" src="js/user.js"></script> -->
+<script type="text/javascript" src="/js/dropdownlist.js"></script>
+<script type="text/javascript" src="/js/user.js"></script>
+<script type="text/javascript" src="/js/statecitylist.js"></script> 
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -88,7 +89,7 @@
 	</div>
 
 	<!--   edit model -->
-	<!-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+	 <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<form th:action="@{/updateU}" method="post">
 			<div class="modal-dialog" role="document">
@@ -101,6 +102,10 @@
 						</button>
 					</div>
 					<div class="modal-body">
+					 <form>
+		<table width="100%">
+			<tr>
+				<td width="50%" style="padding-bottom:95px">
 						<div class="form-group">
 							<input type="hidden" class="form-control" id="editid" name="id">
 						</div>
@@ -121,39 +126,45 @@
 								<option th:value="EDITOR">EDITOR</option>
 							</select>
 						</div>
-						<div class="form-group">
-							<label for="country_Name" class="col-form-label">Country:</label> <input
-								type="text" class="form-control" id="country_Name"
-								name="country_Name" th:value="${country_Name}">
-						</div>
-						<div class="form-group">
+		
+						<!-- <div class="form-group">
+							<label for="country_Name" class="col-form-label">Country:</label>
+								<select id="countryid" name="" class="form-control">
+								  <option value="#">-------Select Country------</option>
+								  <option th:value="1">India</option> 
+								</select>
+						</div> -->
+						</td>
+				<td width="50%" style="padding-left:10px;">
+						<!-- <div class="form-group">
 							<label for="country_code" class="col-form-label">Country Code:</label> <input
-								type="text" class="form-control" id=""
+								type=text class="form-control" id=""
 								name="country_code" th:value="${country_code}">
+						</div> -->
+						<div class="form-group">
+							<label for="country_Name" class="col-form-label">Country:</label>
+								<select id="countryid" name="" class="form-control">
+								  <option value="#">-------Select Country------</option>
+								  <option th:value="1">India</option> 
+								</select>
 						</div>
 						<div class="form-group">
-							<label for="state_name" class="col-form-label">State:</label> <input
-								type="text" class="form-control" id=""
-								name="state_name">
-						</div>
+							<label for="state_name">State:</label> 
+							<select id="statebox" name="state_name" class="form-control">
+							 <option value="#">-----Select State-----</option>
+							</select>							
+						</div>	
 						<div class="form-group">
-							<label for="state_name">Roles:</label> <select id="role" name="role" th:each="state :${slist}"
-								class="form-control">
-								<option value="#">-----Select Roles-----</option>
-								<option th:text="${state.state_name}"></option>
-							</select>
-						<div class="form-group">
-							<input type="hidden" class="form-control" id="editcountryid" name="countryid">
+							<label for="city_name" class="col-form-label">City:</label> 
+							<select id="comboboxCity" class="form-control" name="city_name">
+							</select>	
 						</div>
-						<div class="form-group">
-							<label for="city_name" class="col-form-label">City:</label> <input
-								type="text" class="form-control" id=""
-								name="city_name">
+						</td>
+			</tr>			
+		</table>
+		 <hr>
+		</form>
 						</div>
-						<div class="form-group">
-							<input type="hidden" class="form-control" id="editstateid" name="stateid">
-						</div>
-					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-primary">Update</button>
@@ -161,7 +172,7 @@
 				</div>
 			</div>
 		</form>
-	</div> -->
+	</div> 
 	<!-- edit model ends -->
 	<!--  delete Model start -->
 		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"

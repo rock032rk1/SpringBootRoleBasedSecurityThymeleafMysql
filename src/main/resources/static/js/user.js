@@ -11,7 +11,8 @@ $(document).ready(function(){
 				$('#editid').val(st.id);
 				$('#editusername').val(st.username);
 				$('#editpassword').val(st.password);
-				$('#country_Name').val(st.country_Name);
+				//$('#countryid').val(st.country_Name);
+				//$('#country_Name').val(st.country_Name);
 
 			});
 			$('#editModal').modal();
